@@ -1,0 +1,46 @@
+
+
+services:
+
+  nginx:
+    image: nginx:1.25
+    container_name: demo-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx_logs:/var/log/nginx
+    depends_on:
+      - logstash
+
+  filebeat:
+    image: elastic/filebeat:8.12.0
+    container_name: demo-filebeat
+    user: root
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./nginx_logs:/var/log/nginx
+    depends_on:
+      - logstash
+    command: ["--strict.perms=false"]
+
+  logstash:
+    build: ./logstash-image
+    container_name: demo-logstash
+    volumes:
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "5044:5044"
+    depends_on:
+      - clickhouse
+
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:23.8
+    container_name: demo-clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./clickhouse_data:/var/lib/clickhouse
+      - ./clickhouse/init.sql:/docker-entrypoint-initdb.d/init.sql

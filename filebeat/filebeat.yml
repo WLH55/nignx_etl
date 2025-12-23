@@ -1,0 +1,16 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/nginx/track_access.log
+  json.keys_under_root: true
+  json.overwrite_keys: true
+
+output.logstash:
+  hosts: ["logstash:5044"]
+  bulk_max_size: 200
+
+
+logging.level: debug
+logging.to_files: false
+logging.to_syslog: false  
