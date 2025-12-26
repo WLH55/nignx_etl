@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>神策数据复杂结构测试</title>
+    <script src="https://static.sensorsdata.cn/sdk/1.26.11/sensorsdata.min.js"></script>
+    <script>
+        var sensors = window['sensorsDataAnalytic201505'];
+        sensors.init({
+          server_url: 'http://localhost:8080/sa', 
+          use_client_time: true,
+          send_type: 'ajax' 
+        });
+        sensors.quick('autoTrack');
+    </script>
+</head>
+<body>
+    <h1>神策 SDK 复杂 JSON 发送测试</h1>
+    <button id="testBtn">发送 GA4 格式数据</button>
+
+    <script>
+        document.getElementById('testBtn').addEventListener('click', function() {
+            // 1. 定义你提供的完整数据对象
+            var complexData = {
+                "event_date": "20251223",
+                "event_timestamp": "1766445975690035",
+                "event_name": "town_pic",
+                "event_params": [
+                    {"key": "town_action", "value": {"string_value": "intown_comp_firstPic"}},
+                    {"key": "firebase_screen_id", "value": {"int_value": "1311806653197652793"}},
+                    {"key": "town_name", "value": {"string_value": "chineseStyle"}},
+                    {"key": "ga_session_id", "value": {"int_value": "1766444671"}},
+                    {"key": "engaged_session_event", "value": {"int_value": "1"}},
+                    {"key": "ga_session_number", "value": {"int_value": "179"}},
+                    {"key": "firebase_event_origin", "value": {"string_value": "app"}},
+                    {"key": "firebase_screen_class", "value": {"string_value": "NewColorActivity"}}
+                ],
+                "event_previous_timestamp": "1766445737899035",
+                "event_bundle_sequence_id": "17094",
+                "event_server_timestamp_offset": "1300893",
+                "user_pseudo_id": "3a4eaefba11929a765d44997e43de0d2",
+                "privacy_info": {"analytics_storage": "Yes", "ads_storage": "Yes", "uses_transient_token": "No"},
+                "user_properties": [
+                    {"key": "last_gclid", "value": {"string_value": "CjwKCAjwmNLHBhA4EiwA3ts3mf-QwoUhY5wkcKeSCYBwnukTrVMt8vH7ymnGWdhifofNR6pRte_sOxoCZJ4QAvD_BwE", "set_timestamp_micros": "1760962809897000"}},
+                    {"key": "ga_session_number", "value": {"int_value": "179", "set_timestamp_micros": "1766444671471000"}},
+                    {"key": "first_open_time", "value": {"int_value": "1760965200000", "set_timestamp_micros": "1760962803921000"}},
+                    {"key": "ga_session_id", "value": {"int_value": "1766444671", "set_timestamp_micros": "1766444671471000"}}
+                ],
+                "user_first_touch_timestamp": "1760962803921000",
+                "device": {
+                    "category": "mobile",
+                    "mobile_brand_name": "Xiaomi",
+                    "mobile_model_name": "2409BRN2CL",
+                    "operating_system": "Android",
+                    "language": "es-us"
+                },
+                "geo": {
+                    "city": "Buenos Aires",
+                    "country": "Argentina",
+                    "region": "Buenos Aires"
+                },
+                "app_info": {
+                    "id": "com.no.color",
+                    "version": "25.9.3.7"
+                },
+                "traffic_source": {
+                    "name": "vv92-Nopix_LATAM_3.0_ARO_70%_0724",
+                    "medium": "cpc",
+                    "source": "google"
+                },
+                "platform": "ANDROID",
+                "is_active_user": true
+            };
+
+            // 2. 使用神策 track 发送
+            // 我们将 event_name 映射为神策的事件名
+            sensors.track(complexData.event_name, complexData);
+
+            alert('GA4 格式数据已发送！');
+        });
+    </script>
+</body>
+</html>

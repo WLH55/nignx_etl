@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Firebase Analytics 快速启动</title>
+</head>
+<body>
+    <h1>Firebase 埋点测试</h1>
+    <button id="btnEnter">点击发送：进入街道</button>
+
+    <script type="module">
+        console.log("正在初始化 Firebase...");
+
+        // 从官方文档指定的 CDN 引入
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+
+        // 你提供的配置信息
+        const firebaseConfig = {
+            apiKey: "AIzaSyBa9MHvDQVHTqiYVC17VoCo5POx_GSCwTU",
+            authDomain: "picdemo-119e8.firebaseapp.com",
+            projectId: "picdemo-119e8",
+            storageBucket: "picdemo-119e8.firebasestorage.app",
+            messagingSenderId: "708860056544",
+            appId: "1:708860056544:web:579e8368548abda69a9185",
+            measurementId: "G-D6RF4C9M3Z"
+        };
+
+        // 2. 初始化应用
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        console.log("Firebase 初始化成功！");
+
+        // 3. 使用事件监听器，避开 window 作用域问题
+        document.getElementById('btnEnter').addEventListener('click', () => {
+            console.log("按钮被点击，准备上报...");
+            
+            logEvent(analytics, 'town_pic', {
+                town_name: 'magic_forest',
+                town_action: 'town_enter',
+                debug_mode: true // 强制进入 DebugView 实时查看
+            });
+
+            alert("已尝试上报！请观察控制台 Network 选项卡。");
+        });
+    </script>
+</body>
+</html>

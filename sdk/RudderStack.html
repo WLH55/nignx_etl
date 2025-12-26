@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RudderStack CDN 测试</title>
+    
+    <script src="./rudder-analytics.js"></script>
+    <script type="text/javascript">
+        const RudderAnalytics = window.rudderanalytics.RudderAnalytics;
+        window.rudderanalytics = new RudderAnalytics();
+        window.rudderanalytics.load("dummy_key", "http://localhost:8080/rudder", {
+            configUrl: "http://localhost:8080/rudder"
+        });
+        window.rudderanalytics.page();
+    </script>
+</head>
+<body>
+    <h1>rudder-analytics.js 测试</h1>
+    <button id="trackBtn">发送测试埋点</button>
+
+    <script>
+        document.getElementById('trackBtn').addEventListener('click', function() {
+            if (window.rudderanalytics) {
+                window.rudderanalytics.track("cdn_test_event", {
+                    method: "CDN_Method_1",
+                    timestamp: new Date().getTime()
+                });
+                console.log("事件已发出，请检查 Nginx 日志");
+            } else {
+                console.error("SDK 尚未加载，请检查网络或拦截插件");
+            }
+        });
+    </script>
+</body>
+</html>
